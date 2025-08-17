@@ -50,7 +50,7 @@
   @media (prefers-reduced-motion:reduce){ .fog,.fog.layer2{ animation:none } }
 
   /* Optional Buddha mascot */
-  .buddha{ position:absolute; left:18px; bottom:18px; width:64px; height:auto;
+  .buddha{ position:absolute; left:18px; bottom:18px; width:128px; height:auto;
            z-index:6; opacity:.85; filter:drop-shadow(0 4px 8px rgba(0,0,0,.6)) }
   .buddha.glow{ animation:buddhaGlow 2.4s ease-out 1 }
   @keyframes buddhaGlow{
@@ -246,27 +246,57 @@
         {"text":"You are allowed to feel this good.","weight":1}
       ]
     },
-    "reinforcement": {
+"reinforcement": {
       "drop": [
         "You have let go—your spirit is freer.",
         "Release is strength, not weakness.",
         "A burden cast away makes room for peace.",
         "The river takes what you no longer carry.",
-        "With each release, the bridge steadies."
+        "With each release, the bridge steadies.",
+        "The sky above you feels a little clearer now.",
+        "What was heavy is now dust in the wind.",
+        "You have chosen lightness, and it suits you.",
+        "The space you've created invites peace to enter.",
+        "A knot in the soul has been gently untied.",
+        "You walk onward, unburdened and more centered.",
+        "The echo of the past fades into the mist below.",
+        "Emptiness is not nothing; it is possibility.",
+        "The current has accepted what you offered it.",
+        "You are lighter now, and the path is clearer for it."
       ],
       "continue": [
         "You continue with balance and quiet resolve.",
         "The steady step is sometimes the wisest one.",
         "Even without change, you move forward.",
         "Balanced attention is powerful medicine.",
-        "Calm persistence is its own momentum."
+        "Calm persistence is its own momentum.",
+        "The center holds. You walk the middle path with grace.",
+        "Each breath is a point of perfect balance.",
+        "Stillness is not inaction; it is focused power.",
+        "You honor the moment by simply being present within it.",
+        "The journey is made one steady step at a time.",
+        "Your composure is a quiet anchor in the fog.",
+        "Neither rushing nor resisting, you find your own rhythm.",
+        "This moment of pause is its own quiet destination.",
+        "True north is found within a calm and listening heart.",
+        "You are observing the world without being shaken by it."
       ],
       "hope": [
         "Your hope illuminates the path for others.",
         "Dreams cast forward seed tomorrow’s joy.",
         "Every spark of hope brightens the world.",
         "Light offered never leaves you dimmer.",
-        "Your kindness alters the weather ahead."
+        "Your kindness alters the weather ahead.",
+        "You have cast a beam of light into the future.",
+        "The warmth you generate returns to you threefold.",
+        "A single candle of kindness can defy the dark.",
+        "Your positive energy resonates across the bridge.",
+        "You are a lantern in the fog for yourself and others.",
+        "The world is brighter for the choice you just made.",
+        "Goodness planted here will bloom on the path ahead.",
+        "Your heart's compass points steadily toward the dawn.",
+        "Let this feeling of warmth be a guide for your next step.",
+        "Joy is a current, and you have tapped into its flow."
       ]
     },
     "guidance": {
@@ -275,9 +305,14 @@
         "The present can shape you, but it never has to cage you.",
         "Every breath is a chance for renewal.",
         "This bridge remembers, but it does not bind.",
-        "You walk forward—not away from yourself, but toward your light."
-      ],
-      "preWeigh": "Let us weigh the balance of the soul…",
+        "You walk forward—not away from yourself, but toward your light.",
+        "This is a place between worlds, where a choice can change the path.",
+        "What you carry and what you release are yours to decide.",
+        "Listen to the wisdom that whispers just beneath the noise.",
+        "The journey ahead is unwritten; your choices are the ink.",
+        "Each step is a conversation between you and your soul."
+      ],    
+	"preWeigh": "Let us weigh the balance of the soul…",
       "choose":  "Choose one word to guide your next step.\n(Each word nudges the bridge: Release • Balance • Brighten.)"
     }
   }
@@ -433,7 +468,7 @@
     LEX.reinforcement = FB.reinforcement;
     LEX.guidance      = FB.guidance;
 
-    const candidates = ['AFINN/AFINN-111.txt','AFINN-111.txt'];
+    const candidates = ['AFINN-111.txt'];
     for(const path of candidates){
       try{
         const res = await fetch(path);
