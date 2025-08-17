@@ -1,0 +1,398 @@
+{
+  "words": {
+    "-10": [
+      {"word": "atrocity", "score": -10},
+      {"word": "genocide", "score": -10},
+      {"word": "torture", "score": -10},
+      {"word": "abomination", "score": -10},
+      {"word": "massacre", "score": -10},
+      {"word": "ruin", "score": -10},
+      {"word": "annihilation", "score": -10},
+      {"word": "catastrophe", "score": -10},
+      {"word": "obliteration", "score": -10},
+      {"word": "doom", "score": -10}
+    ],
+    "-9": [
+      {"word": "murder", "score": -9},
+      {"word": "despair", "score": -9},
+      {"word": "destruction", "score": -9},
+      {"word": "betrayal", "score": -9},
+      {"word": "horrific", "score": -9},
+      {"word": "collapse", "score": -9},
+      {"word": "carnage", "score": -9},
+      {"word": "tragedy", "score": -9},
+      {"word": "slaughter", "score": -9},
+      {"word": "horror", "score": -9}
+    ],
+    "-8": [
+      {"word": "hatred", "score": -8},
+      {"word": "agony", "score": -8},
+      {"word": "torment", "score": -8},
+      {"word": "dread", "score": -8},
+      {"word": "anguish", "score": -8},
+      {"word": "fearsome", "score": -8},
+      {"word": "wrath", "score": -8},
+      {"word": "chaos", "score": -8},
+      {"word": "corruption", "score": -8},
+      {"word": "devastation", "score": -8}
+    ],
+    "-7": [
+      {"word": "pain", "score": -7},
+      {"word": "rage", "score": -7},
+      {"word": "resentment", "score": -7},
+      {"word": "hostility", "score": -7},
+      {"word": "curse", "score": -7},
+      {"word": "disgust", "score": -7},
+      {"word": "misery", "score": -7},
+      {"word": "nightmare", "score": -7},
+      {"word": "loss", "score": -7},
+      {"word": "vengeance", "score": -7}
+    ],
+    "-6": [
+      {"word": "guilt", "score": -6},
+      {"word": "sorrow", "score": -6},
+      {"word": "grief", "score": -6},
+      {"word": "failure", "score": -6},
+      {"word": "weakness", "score": -6},
+      {"word": "tormented", "score": -6},
+      {"word": "collapse", "score": -6},
+      {"word": "mourn", "score": -6},
+      {"word": "shame", "score": -6},
+      {"word": "rejection", "score": -6}
+    ],
+    "-5": [
+      {"word": "anger", "score": -5},
+      {"word": "stress", "score": -5},
+      {"word": "conflict", "score": -5},
+      {"word": "worry", "score": -5},
+      {"word": "envy", "score": -5},
+      {"word": "lonely", "score": -5},
+      {"word": "hurt", "score": -5},
+      {"word": "trouble", "score": -5},
+      {"word": "fear", "score": -5},
+      {"word": "doubt", "score": -5}
+    ],
+    "-4": [
+      {"word": "complain", "score": -4},
+      {"word": "struggle", "score": -4},
+      {"word": "tired", "score": -4},
+      {"word": "resigned", "score": -4},
+      {"word": "distrust", "score": -4},
+      {"word": "irritation", "score": -4},
+      {"word": "dissatisfaction", "score": -4},
+      {"word": "gloom", "score": -4},
+      {"word": "uncertain", "score": -4},
+      {"word": "critical", "score": -4}
+    ],
+    "-3": [
+      {"word": "awkward", "score": -3},
+      {"word": "hesitant", "score": -3},
+      {"word": "concerned", "score": -3},
+      {"word": "uneasy", "score": -3},
+      {"word": "nervous", "score": -3},
+      {"word": "shaky", "score": -3},
+      {"word": "restless", "score": -3},
+      {"word": "unsure", "score": -3},
+      {"word": "weary", "score": -3},
+      {"word": "moody", "score": -3}
+    ],
+    "-2": [
+      {"word": "meh", "score": -2},
+      {"word": "dull", "score": -2},
+      {"word": "bland", "score": -2},
+      {"word": "ordinary", "score": -2},
+      {"word": "neutral", "score": -2},
+      {"word": "gray", "score": -2},
+      {"word": "indifferent", "score": -2},
+      {"word": "flat", "score": -2},
+      {"word": "stale", "score": -2},
+      {"word": "unimpressed", "score": -2}
+    ],
+    "-1": [
+      {"word": "quiet", "score": -1},
+      {"word": "pause", "score": -1},
+      {"word": "simple", "score": -1},
+      {"word": "plain", "score": -1},
+      {"word": "slow", "score": -1},
+      {"word": "mild", "score": -1},
+      {"word": "basic", "score": -1},
+      {"word": "soft", "score": -1},
+      {"word": "small", "score": -1},
+      {"word": "humble", "score": -1}
+    ],
+    "0": [
+      {"word": "balance", "score": 0},
+      {"word": "equilibrium", "score": 0},
+      {"word": "steady", "score": 0},
+      {"word": "neutrality", "score": 0},
+      {"word": "ordinary", "score": 0},
+      {"word": "silence", "score": 0},
+      {"word": "plainness", "score": 0},
+      {"word": "calm", "score": 0},
+      {"word": "pause", "score": 0},
+      {"word": "stillness", "score": 0}
+    ],
+    "1": [
+      {"word": "gentle", "score": 1},
+      {"word": "okay", "score": 1},
+      {"word": "content", "score": 1},
+      {"word": "fine", "score": 1},
+      {"word": "moderate", "score": 1},
+      {"word": "regular", "score": 1},
+      {"word": "simple", "score": 1},
+      {"word": "light", "score": 1},
+      {"word": "subtle", "score": 1},
+      {"word": "fair", "score": 1}
+    ],
+    "2": [
+      {"word": "bright", "score": 2},
+      {"word": "smooth", "score": 2},
+      {"word": "hopeful", "score": 2},
+      {"word": "gentle joy", "score": 2},
+      {"word": "ease", "score": 2},
+      {"word": "flow", "score": 2},
+      {"word": "pleasant", "score": 2},
+      {"word": "soft glow", "score": 2},
+      {"word": "warmth", "score": 2},
+      {"word": "comfort", "score": 2}
+    ],
+    "3": [
+      {"word": "happy", "score": 3},
+      {"word": "good", "score": 3},
+      {"word": "positive", "score": 3},
+      {"word": "cheerful", "score": 3},
+      {"word": "kind", "score": 3},
+      {"word": "friendly", "score": 3},
+      {"word": "bliss", "score": 3},
+      {"word": "uplift", "score": 3},
+      {"word": "smile", "score": 3},
+      {"word": "peace", "score": 3}
+    ],
+    "4": [
+      {"word": "blessed", "score": 4},
+      {"word": "serene", "score": 4},
+      {"word": "joyful", "score": 4},
+      {"word": "bright light", "score": 4},
+      {"word": "open heart", "score": 4},
+      {"word": "trust", "score": 4},
+      {"word": "gratitude", "score": 4},
+      {"word": "grace", "score": 4},
+      {"word": "hope", "score": 4},
+      {"word": "playful", "score": 4}
+    ],
+    "5": [
+      {"word": "love", "score": 5},
+      {"word": "joy", "score": 5},
+      {"word": "faith", "score": 5},
+      {"word": "delight", "score": 5},
+      {"word": "beauty", "score": 5},
+      {"word": "kindness", "score": 5},
+      {"word": "abundance", "score": 5},
+      {"word": "freedom", "score": 5},
+      {"word": "inspire", "score": 5},
+      {"word": "laughter", "score": 5}
+    ],
+    "6": [
+      {"word": "radiant", "score": 6},
+      {"word": "magical", "score": 6},
+      {"word": "extraordinary", "score": 6},
+      {"word": "brilliant", "score": 6},
+      {"word": "generous", "score": 6},
+      {"word": "enchanted", "score": 6},
+      {"word": "alive", "score": 6},
+      {"word": "thriving", "score": 6},
+      {"word": "sacred", "score": 6},
+      {"word": "loving", "score": 6}
+    ],
+    "7": [
+      {"word": "ecstasy", "score": 7},
+      {"word": "miracle", "score": 7},
+      {"word": "infinite", "score": 7},
+      {"word": "divine", "score": 7},
+      {"word": "exuberant", "score": 7},
+      {"word": "rapture", "score": 7},
+      {"word": "heavenly", "score": 7},
+      {"word": "glorious", "score": 7},
+      {"word": "sparkling", "score": 7},
+      {"word": "transcendent", "score": 7}
+    ],
+    "8": [
+      {"word": "sublime", "score": 8},
+      {"word": "majestic", "score": 8},
+      {"word": "triumphant", "score": 8},
+      {"word": "glorious dawn", "score": 8},
+      {"word": "resplendent", "score": 8},
+      {"word": "celebration", "score": 8},
+      {"word": "radiance", "score": 8},
+      {"word": "divinity", "score": 8},
+      {"word": "immense", "score": 8},
+      {"word": "resurrection", "score": 8}
+    ],
+    "9": [
+      {"word": "universal love", "score": 9},
+      {"word": "cosmic harmony", "score": 9},
+      {"word": "infinite light", "score": 9},
+      {"word": "boundless joy", "score": 9},
+      {"word": "eternal flame", "score": 9},
+      {"word": "supreme good", "score": 9},
+      {"word": "immortal", "score": 9},
+      {"word": "infinite joy", "score": 9},
+      {"word": "perfection", "score": 9},
+      {"word": "seraphic", "score": 9}
+    ],
+    "10": [
+      {"word": "nirvana", "score": 10},
+      {"word": "enlightenment", "score": 10},
+      {"word": "divine union", "score": 10},
+      {"word": "infinite bliss", "score": 10},
+      {"word": "eternity", "score": 10},
+      {"word": "ultimate truth", "score": 10},
+      {"word": "cosmic peace", "score": 10},
+      {"word": "pure love", "score": 10},
+      {"word": "infinite joy", "score": 10},
+      {"word": "transcendence", "score": 10}
+    ]
+  },
+   "guidance": {
+    "general": [
+      "The moment we are in shapes us, but does not define us.",
+      "Every step on this bridge is an opportunity to grow.",
+      "Stillness is not emptiness, but a chance to hear your heart.",
+      "The fog may cover the path, yet the bridge always leads forward.",
+      "Reflection is the lantern that lights the inner path."
+    ],
+    "-5": [
+      "Even the abyss has an end—though unseen from here.",
+      "The bridge trembles under such weight, but it still holds."
+    ],
+    "-4": [
+      "Greed and rage are chains, yet chains can be broken.",
+      "Shadows deepen, but a single spark can resist them."
+    ],
+    "-3": [
+      "Your anger is heavy, but it moves you forward—choose carefully.",
+      "Fear is a compass pointing to the work yet undone."
+    ],
+    "-2": [
+      "Doubt lingers like mist, but even mist burns away.",
+      "Frustration is energy waiting to be transformed."
+    ],
+    "-1": [
+      "Uncertainty slows your step, but it still counts as movement.",
+      "Longing can be the seed of change."
+    ],
+    "0": [
+      "Stillness can be both anchor and horizon.",
+      "The middle path carries no judgment, only balance."
+    ],
+    "1": [
+      "Curiosity opens doors that fear keeps closed.",
+      "Patience is strength disguised as quiet."
+    ],
+    "2": [
+      "Trust is a bridge stronger than stone.",
+      "Hope carried forward is hope multiplied."
+    ],
+    "3": [
+      "Resilience shines brightest in adversity.",
+      "Wisdom is not knowing everything, but knowing how to walk."
+    ],
+    "4": [
+      "Love is the torch that lights the unseen path.",
+      "Vision transforms a bridge into a journey."
+    ],
+    "5": [
+      "You are nearing radiance itself—the bridge sings with your step.",
+      "Transcendence begins where the self ends."
+    ]
+  },
+
+  "reflection": {
+    "-5": [
+      "Hatred corrodes the vessel that carries it.",
+      "Even annihilation teaches the value of creation."
+    ],
+    "-4": [
+      "Greed devours itself, leaving nothing behind.",
+      "Arrogance blinds the one who holds it."
+    ],
+    "-3": [
+      "Fear clouds judgment but also reveals what we care for.",
+      "Resentment burns the hand that clutches it."
+    ],
+    "-2": [
+      "Frustration is the threshold of growth.",
+      "Apathy whispers louder than anger."
+    ],
+    "-1": [
+      "Hesitation is a lesson in patience.",
+      "Uncertainty shows us where light is missing."
+    ],
+    "0": [
+      "Equilibrium is neither loss nor gain—it is foundation.",
+      "Stillness listens where noise cannot."
+    ],
+    "1": [
+      "Patience aligns the heart with time itself.",
+      "Observation gives shape to the unseen."
+    ],
+    "2": [
+      "Kindness softens the hardest of stones.",
+      "Hope is the current beneath every step."
+    ],
+    "3": [
+      "Wisdom grows not in ease, but in trial.",
+      "Resilience bends but does not break."
+    ],
+    "4": [
+      "Love heals wounds unseen.",
+      "Truth is the quiet constant beneath change."
+    ],
+    "5": [
+      "Transcendence is not escape, but embrace.",
+      "Infinite light casts no shadow."
+    ]
+  },
+
+  "reinforcement": {
+    "drop": {
+      "general": [
+        "You have let go—your spirit is freer.",
+        "Release is a strength, not a weakness."
+      ],
+      "-5": [
+        "Even hatred can be dropped—it has no true claim on you."
+      ],
+      "-3": [
+        "Anger released is power reclaimed."
+      ],
+      "-1": [
+        "Uncertainty, when released, becomes clarity."
+      ]
+    },
+    "hope": {
+      "general": [
+        "Your hope illuminates the path for others.",
+        "Dreams shared are seeds of tomorrow’s joy."
+      ],
+      "1": [
+        "Patience lights a quiet fire inside you."
+      ],
+      "3": [
+        "Wisdom shines brighter when hope carries it."
+      ],
+      "5": [
+        "Infinite light pours forth—you are the beacon."
+      ]
+    },
+    "continue": {
+      "general": [
+        "You continue on your path with balance.",
+        "The steady step is sometimes the wisest one."
+      ],
+      "0": [
+        "The middle way carries no burden and no prize—only step by step."
+      ]
+    }
+  }
+}
