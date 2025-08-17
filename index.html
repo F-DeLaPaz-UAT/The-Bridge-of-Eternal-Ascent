@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>The Bridge of Eternal Ascent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  * { box-sizing: border-box }
+  html, body { height: 100% }
+  body{
+    margin:0;
+    font-family:"Georgia",serif;
+    color:#fff;
+    overflow:hidden;
+    text-align:center;
+    background: radial-gradient(circle at 50% 75%,
+      rgba(180,210,255,0.10) 0%,
+      #001933 45%, #000814 100%);
+    transition: background 800ms ease;
+    position:relative;
+  }
+
+  /* Scene layers (never intercept clicks) */
+  .bridge-layer,
+  .title-layer,
+  .fog,
+  .fx { pointer-events:none }
+
+  .bridge-layer{
+    position:absolute; inset:0;
+    background:url("Bridge.png") no-repeat center bottom / cover;
+    opacity:.9; z-index:-3;
+  }
+  .title-layer{
+    position:absolute; top:15vh; left:50%;
+    transform:translateX(-50%);
+    width:min(80vw,1000px); height:auto;
+    z-index:-3; opacity:.95;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.5));
+  }
+  .fog{
+    position:absolute; top:0; left:0;
+    width:200%; height:100%;
+    background:url("fog.png") repeat-x; background-size:cover;
+    opacity:.45; z-index:-2;
+    animation:drift 120s linear infinite;
+  }
+  .fog.layer2{ opacity:.30; animation:drift 180s linear infinite reverse }
+  @keyframes drift{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @media (prefers-reduced-motion:reduce){ .fog,.fog.layer2{ animation:none } }
+
+  /* Optional Buddha mascot */
+  .buddha{ position:absolute; left:18px; bottom:18px; width:64px; height:auto;
+           z-index:6; opacity:.85; filter:drop-shadow(0 4px 8px rgba(0,0,0,.6)) }
+  .buddha.glow{ animation:buddhaGlow 2.4s ease-out 1 }
+  @keyframes buddhaGlow{
+    0%{ filter:drop-shadow(0 4px 8px rgba(0,0,0,.6)) brightness(1) }
+    40%{ filter:drop-shadow(0 0 16px rgba(210,240,255,.8)) brightness(1.25) }
+    100%{ filter:drop-shadow(0 4px 8px rgba(0,0,0,.6)) brightness(1) }
+  }
+
+  /* FX: ripple below bridge / beam above console */
+  .fx{ position:absolute; inset:0 }
+  .fx-below{ z-index:-4 }
+  .fx-above{ z-index:5 }
+
+  .beam{
+    position:absolute; left:50%; bottom:18%;
+    width:42vw; height:60vh; transform:translateX(-50%) scale(.9);
+    background:radial-gradient(ellipse at 50% 100%,
+      rgba(255,255,210,.45) 0%,
+      rgba(255,255,210,.25) 35%,
+      rgba(255,255,210,0) 70%);
+    filter:blur(2px); opacity:0;
+    animation:beamRise 1.8s ease-out forwards;
+  }
+  @keyframes beamRise{
+    0%{ opacity:0; transform:translateX(-50%) translateY(0) scale(.9) }
+    20%{ opacity:.85 }
+    100%{ opacity:0; transform:translateX(-50%) translateY(-12%) scale(1.08) }
+  }
+
+  .ripple{
+    position:absolute; left:50%; bottom:10vh;
+    width:10vmin; height:10vmin; transform:translate(-50%,0) scale(.6);
+    border:2px solid rgba(200,220,255,.45); border-radius:50%;
+    opacity:0; box-shadow:0 0 30px rgba(160,190,255,.15) inset;
+    animation:ripple 1.6s ease-out forwards;
+  }
+  @keyframes ripple{
+    0%{ opacity:0; transform:translate(-50%,0) scale(.6) }
+    20%{ opacity:.7 }
+    100%{ opacity:0; transform:translate(-50%,0) scale(3.5) }
+  }
+
+  /* Console (centered) */
+  #console{
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:min(900px,84%); max-height:45vh;
+    padding:22px; border-radius:14px;
+    background:rgba(0,0,20,.72);
+    box-shadow:0 0 20px rgba(0,0,0,.6);
+    font-size:1.2rem; line-height:1.55rem;
+    overflow:hidden; z-index:3;
+    transition: max-height 400ms ease;
+  }
+  /* expand console for summary */
+  #console.console-tall { max-height: 68vh; }
+
+  #consoleInner{
+    height:100%; overflow-y:auto; text-align:center; white-space:pre-wrap; padding-right:6px;
+  }
+
+  /* Controls (mid page) — always on top & clickable */
+  #controls{
+    position:absolute; top:63%; left:50%;
+    transform:translate(-50%,-50%);
+    width:100%;
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    z-index:1000; pointer-events:auto;
+    transition: top 400ms ease;
+  }
+  /* push controls down at the end so they never overlap summary */
+  body.end-mode #controls { top: 82%; }
+
+  .btn{
+    font-size:1.2rem; padding:12px 22px; border:none; border-radius:12px;
+    cursor:pointer; color:#fff; transform:translateY(4px); opacity:0;
+    transition:transform 280ms ease, box-shadow 280ms ease, opacity 600ms ease;
+    box-shadow:0 0 12px rgba(0,0,0,.35);
+  }
+  .btn.show{ opacity:1; transform:translateY(0) }
+  .btn:hover{ transform:translateY(-2px) scale(1.03); box-shadow:0 6px 18px rgba(0,0,0,.35) }
+
+  /* quick, gentle fade-out for any button */
+  .btn.exit{
+    opacity:0;
+    transform: translateY(8px) scale(0.98);
+    transition: opacity 200ms ease, transform 200ms ease;
+    pointer-events:none;
+  }
+
+  .stage-blue      { background:#4a90e2 }
+  .stage-turquoise { background:#40e0d0; color:#002a2a }
+  .stage-green     { background:#4caf50 }
+  .action-btn      { background:#ffcc33; color:#000 }
+  .start-btn       { background:#2a8 }
+  .reset-btn       { background:#7b3fe4 }
+
+  @media (max-width: 640px){
+    body.end-mode #controls { top: 86%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bridge-layer"></div>
+  <img class="title-layer" src="EA Logo.png" alt="" />
+  <div class="fog layer1"></div>
+  <div class="fog layer2"></div>
+
+  <img class="buddha" src="buddha.png" alt="" />
+
+  <div id="fxBelow" class="fx fx-below"></div>
+  <div id="fxAbove" class="fx fx-above"></div>
+
+  <div id="console"><div id="consoleInner">Welcome, traveler. Press Begin Journey to start…</div></div>
+
+  <div id="controls">
+    <button id="startBtn" class="btn start-btn show">Begin Journey</button>
+  </div>
+
+  <!-- Fallback lexicon; we’ll try AFINN first -->
+  <script type="application/json" id="fallback-lexicon">
+  {
+    "words": {
+      "negative": [{"word":"sorrow","score":-5},{"word":"grief","score":-4},{"word":"anger","score":-3},{"word":"fear","score":-3},{"word":"worry","score":-2}],
+      "neutral":  [{"word":"pause","score":0},{"word":"stillness","score":0},{"word":"observe","score":1},{"word":"wait","score":-1},{"word":"present","score":0}],
+      "positive": [{"word":"hope","score":4},{"word":"gratitude","score":5},{"word":"kindness","score":3},{"word":"peace","score":4},{"word":"renewal","score":3}]
+    },
+    "reflection": {
+      "negative": [
+        {"text":"Your burdens are seen—set them down.","weight":3},
+        {"text":"Release what weighs heavy upon you.","weight":3},
+        {"text":"To notice pain is to loosen its grip.","weight":2},
+        {"text":"Even in shadow, you walk toward the light.","weight":2},
+        {"text":"The storm is real, and it will pass.","weight":2},
+        {"text":"Sorrow names what needs caring, not hiding.","weight":2},
+        {"text":"Anger is heat—let it power letting go, not harm.","weight":2},
+        {"text":"Fear points at the gate you can now open.","weight":2},
+        {"text":"You are not your worst moment.","weight":2},
+        {"text":"A single breath can unhook a heavy thought.","weight":1},
+        {"text":"The bridge holds even when knees tremble.","weight":1},
+        {"text":"What you drop becomes space for peace.","weight":3},
+        {"text":"Grief honors love; release honors life.","weight":2},
+        {"text":"Shadows pass fastest when noticed kindly.","weight":2},
+        {"text":"Let the river carry what no longer serves.","weight":3}
+      ],
+      "neutral": [
+        {"text":"Balance carries you without judgment.","weight":3},
+        {"text":"A pause is not a stop, but preparation.","weight":3},
+        {"text":"Stillness lets wisdom surface.","weight":2},
+        {"text":"This moment is a steady stone beneath your feet.","weight":2},
+        {"text":"Equilibrium can be quietly brave.","weight":2},
+        {"text":"Observing is participating in a gentler way.","weight":2},
+        {"text":"The middle way leaves room for breath.","weight":2},
+        {"text":"Neither clutch nor push—simply step.","weight":2},
+        {"text":"Calm does not mean small; it means ready.","weight":2},
+        {"text":"Listening inside clarifies the next move.","weight":2},
+        {"text":"Patience is strength in humble clothes.","weight":2},
+        {"text":"It’s enough to meet the moment you are in.","weight":2},
+        {"text":"Your pace is allowed to be humane.","weight":2},
+        {"text":"Steadiness builds a bridge no storm can break.","weight":2},
+        {"text":"A quiet mind sees wider horizons.","weight":2},
+        {"text":"Neutral is not numb; it’s balanced attention.","weight":1},
+        {"text":"Composure is courage at rest.","weight":1},
+        {"text":"The pause becomes a path when honored.","weight":2},
+        {"text":"Rooted feet, open heart.","weight":1},
+        {"text":"Presence is progress you can trust.","weight":2}
+      ],
+      "positive": [
+        {"text":"Your choice shines upon the path.","weight":3},
+        {"text":"Hope rises like dawn and lifts with it your heart.","weight":3},
+        {"text":"Joy shared multiplies its own warmth.","weight":2},
+        {"text":"Light flows easily where it is welcomed.","weight":2},
+        {"text":"Each kind step brightens the span ahead.","weight":2},
+        {"text":"You carry a lantern others can see by.","weight":2},
+        {"text":"Gratitude turns stones to stepping-stones.","weight":2},
+        {"text":"Trust makes the bridge feel shorter.","weight":2},
+        {"text":"Compassion shapes the world you walk into.","weight":2},
+        {"text":"Clarity arrives when love speaks softly.","weight":2},
+        {"text":"Generosity loosens the knots in the chest.","weight":2},
+        {"text":"Peace is a practice you are practicing now.","weight":2},
+        {"text":"Courage smiles when you do.","weight":1},
+        {"text":"What you cast forward returns as light.","weight":2},
+        {"text":"Your warmth is already changing the weather.","weight":1},
+        {"text":"Kindness is the shortest road across.","weight":2},
+        {"text":"Every gentle act is an answered prayer.","weight":1},
+        {"text":"You are walking the bridge for more than one.","weight":1},
+        {"text":"Brightness chosen becomes brightness shared.","weight":2},
+        {"text":"Harmony grows wherever attention blesses.","weight":2},
+        {"text":"Joy is not far; you are close to it now.","weight":1},
+        {"text":"Your steady glow invites safety.","weight":1},
+        {"text":"Let ease be evidence, not accident.","weight":1},
+        {"text":"You are allowed to feel this good.","weight":1}
+      ]
+    },
+    "reinforcement": {
+      "drop": [
+        "You have let go—your spirit is freer.",
+        "Release is strength, not weakness.",
+        "A burden cast away makes room for peace.",
+        "The river takes what you no longer carry.",
+        "With each release, the bridge steadies."
+      ],
+      "continue": [
+        "You continue with balance and quiet resolve.",
+        "The steady step is sometimes the wisest one.",
+        "Even without change, you move forward.",
+        "Balanced attention is powerful medicine.",
+        "Calm persistence is its own momentum."
+      ],
+      "hope": [
+        "Your hope illuminates the path for others.",
+        "Dreams cast forward seed tomorrow’s joy.",
+        "Every spark of hope brightens the world.",
+        "Light offered never leaves you dimmer.",
+        "Your kindness alters the weather ahead."
+      ]
+    },
+    "guidance": {
+      "intro": [
+        "You are not defined by a single moment.",
+        "The present can shape you, but it never has to cage you.",
+        "Every breath is a chance for renewal.",
+        "This bridge remembers, but it does not bind.",
+        "You walk forward—not away from yourself, but toward your light."
+      ],
+      "preWeigh": "Let us weigh the balance of the soul…",
+      "choose":  "Choose one word to guide your next step.\n(Each word nudges the bridge: Release • Balance • Brighten.)"
+    }
+  }
+  </script>
+
+  <script>
+  /* ====================== DOM ====================== */
+  const consoleEl    = document.getElementById('console');
+  const consoleInner = document.getElementById('consoleInner');
+  const controls     = document.getElementById('controls');
+  const startBtn     = document.getElementById('startBtn');
+  const fxAbove      = document.getElementById('fxAbove');
+  const fxBelow      = document.getElementById('fxBelow');
+  const buddha       = document.querySelector('.buddha');
+
+  /* ===================== STATE ===================== */
+  let round = 0;
+  const maxRounds = 10;               // total selections
+  let castCount = 0;
+  let lexiconReady = false;
+  let busy = false;                   // prevents phase overlap
+  let shownDirection = false;         // show choose-instruction only once
+  const seenWords = new Set();
+
+  const metrics = {
+    baseline: null,
+    cumulativeScore: 0,
+    pos: 0, neu: 0, neg: 0,
+    _lastScore: 0
+  };
+
+  /* ============ ε-greedy “bandit” ============ */
+  const bandit = { eps:0.15, arms:{
+    negative:{n:0,r:0}, neutral:{n:0,r:0}, positive:{n:0,r:0}
+  }}; // n = pulls, r = reward sum
+  const armValue=t=>{const a=bandit.arms[t]; return a.n ? (a.r/a.n) : 0.5};
+  function chooseArm(exclude=new Set()){
+    if(Math.random()<bandit.eps){
+      const cand=['negative','neutral','positive'].filter(t=>!exclude.has(t));
+      return cand[Math.floor(Math.random()*cand.length)];
+    }
+    const ranked=['negative','neutral','positive']
+      .filter(t=>!exclude.has(t))
+      .sort((a,b)=>armValue(b)-armValue(a));
+    return ranked[0] || 'positive';
+  }
+  function updateBandit(tier,reward){ const a=bandit.arms[tier]; a.n+=1; a.r+=reward; }
+
+  /* ============ Lexicon containers ============ */
+  const LEX = { words:{negative:[],neutral:[],positive:[]}, reflection:null, reinforcement:null, guidance:null };
+  const FB  = JSON.parse(document.getElementById('fallback-lexicon').textContent);
+
+  /* ===================== AUDIO ===================== */
+  const sounds = {
+    chant:   new Audio('Sound/chant.mp3'),
+    wind:    new Audio('Sound/wind.mp3'),
+    river:   new Audio('Sound/river.mp3'),
+    birds:   new Audio('Sound/birds.mp3'),
+    drop:    new Audio('Sound/drop.mp3'),
+    thunder: new Audio('Sound/thunder.mp3')
+  };
+  sounds.chant.loop = true;  sounds.chant.volume = 0.10;
+  sounds.river.loop = true;  sounds.river.volume = 0.20; sounds.river.pause();
+  sounds.birds.loop = true;  sounds.birds.volume = 0.20; sounds.birds.pause();
+
+  function safePlay(a){ try{ a && a.play && a.play().catch(()=>{}); }catch{} }
+
+  function playStartAmbience(){
+    try{
+      sounds.thunder.currentTime=0;
+      sounds.thunder.play()
+        .then(()=>setTimeout(()=>safePlay(sounds.chant),800))
+        .catch(()=>safePlay(sounds.chant));
+    }catch{ safePlay(sounds.chant); }
+  }
+  function onCast(){
+    try{ sounds.wind.currentTime=0; sounds.wind.play(); }catch{}
+    if(++castCount===1) safePlay(sounds.river);
+    if(castCount===3)   safePlay(sounds.birds);
+    showCastFX();
+  }
+  function onDrop(){
+    try{ sounds.drop.currentTime=0; sounds.drop.play(); }catch{}
+    try{ sounds.thunder.currentTime=0; sounds.thunder.play(); setTimeout(()=>sounds.thunder.pause(),2500); }catch{}
+    showDropFX();
+  }
+
+  /* ===================== FX ===================== */
+  function showCastFX(){ const b=document.createElement('div'); b.className='beam'; fxAbove.appendChild(b); b.addEventListener('animationend',()=>b.remove()); }
+  function showDropFX(){ const r=document.createElement('div'); r.className='ripple'; fxBelow.appendChild(r); r.addEventListener('animationend',()=>r.remove()); }
+
+  /* ================= Typewriter ================= */
+  function typeConsole(text, speed=70){
+    return new Promise(res=>{
+      busy = true;
+      consoleInner.textContent = '';
+      let i=0;
+      (function tick(){
+        if(i<text.length){
+          consoleInner.textContent += text[i++];
+          consoleInner.scrollTop = consoleInner.scrollHeight;
+          setTimeout(tick, speed);
+        }else{
+          setTimeout(()=>{ busy=false; res(); }, 650);
+        }
+      })();
+    });
+  }
+  async function clearConsolePause(ms=300){
+    busy = true;
+    consoleInner.textContent = '';
+    await new Promise(r=>setTimeout(r, ms));
+    busy = false;
+  }
+
+  /* ================= Button fade helpers ================= */
+  function fadeOutControls(ms=200){
+    return new Promise((resolve)=>{
+      const btns = controls.querySelectorAll('.btn');
+      btns.forEach(b=>{ b.classList.add('exit'); b.disabled=true; b.style.pointerEvents='none'; });
+      setTimeout(()=>{ controls.innerHTML=''; resolve(); }, ms);
+    });
+  }
+  function fadeOutElement(el, ms=200){
+    return new Promise((resolve)=>{
+      if(!el) return resolve();
+      el.classList.add('exit');
+      setTimeout(()=>{ el.remove(); resolve(); }, ms);
+    });
+  }
+
+  function stageClassForRound(r){ if(r<3) return 'stage-blue'; if(r<6) return 'stage-turquoise'; return 'stage-green'; }
+  function labelForScore(s){ if(s<=-2) return 'overcast and heavy'; if(s<=1) return 'balanced and turning'; return 'bright and ascending'; }
+
+  /* ================== Intro ================== */
+  async function playIntroThenWeigh(){
+    controls.innerHTML = '';
+    for(const line of FB.guidance.intro){ await typeConsole(line); }
+    await typeConsole(FB.guidance.preWeigh);
+    await clearConsolePause();
+    if(!shownDirection){
+      await typeConsole(FB.guidance.choose);
+      shownDirection = true;
+    }
+    await clearConsolePause(150);
+    showChoices();
+  }
+
+  /* ============== Load AFINN (big pool) ============== */
+  async function loadAFINN(){
+    // seed texts from fallback right away
+    LEX.reflection    = FB.reflection;
+    LEX.reinforcement = FB.reinforcement;
+    LEX.guidance      = FB.guidance;
+
+    const candidates = ['AFINN/AFINN-111.txt','AFINN-111.txt'];
+    for(const path of candidates){
+      try{
+        const res = await fetch(path);
+        if(!res.ok) continue;
+        const text = await res.text();
+        const lines = text.split(/\r?\n/);
+        const words = {negative:[], neutral:[], positive:[]};
+        for(const line of lines){
+          if(!line || line.startsWith('#')) continue;
+          const parts = line.split(/\s+/);
+          if(parts.length<2) continue;
+          const score = Number(parts.pop());
+          const term  = parts.join(' ').trim();
+          if(!term || Number.isNaN(score)) continue;
+          const obj = {word:term, score};
+          if(score<=-2) words.negative.push(obj);
+          else if(score<=1) words.neutral.push(obj);
+          else words.positive.push(obj);
+        }
+        const total = words.negative.length + words.neutral.length + words.positive.length;
+        if(total>500){ LEX.words = words; lexiconReady = true; console.log(`AFINN loaded: ${total} terms from ${path}`); return; }
+      }catch{}
+    }
+    // fallback tiny pool
+    LEX.words = FB.words; lexiconReady = true; console.warn('Using fallback lexicon (AFINN not found).');
+  }
+  loadAFINN();
+
+  /* ============== Tier & word picking ============== */
+  function tiersForRound(r){
+    const chosen=new Set(), picks=[];
+    for(let i=0;i<3;i++){ const t=chooseArm(chosen); chosen.add(t); picks.push(t); }
+    if (r<3 && !picks.includes('negative')) picks[0]='negative';              // ensure diagnostic early
+    if (r>=6 && picks.filter(x=>x==='positive').length<2) picks[1]='positive'; // ensure positive late
+    return picks;
+  }
+
+  function pickUniqueFromTier(tier, excludeSet, minScore=null){
+    const base = LEX.words[tier]||[];
+    let pool = base.filter(w=>!seenWords.has(w.word));
+    if(minScore!==null) pool = pool.filter(w=>w.score>=minScore);
+    pool = pool.filter(w=>!excludeSet.has(w.word));
+    if(!pool.length) return null;
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  async function showChoices(attempt=0){
+    if(busy) return;
+    if(!lexiconReady){
+      if(attempt<50){
+        await clearConsolePause(0);
+        await typeConsole('Gathering the words from the mist…');
+        return showChoices(attempt+1);
+      }
+    }
+    // Clear console so choices are the only focus
+    await clearConsolePause(120);
+
+    controls.innerHTML = '';
+    const stageClass = stageClassForRound(round);
+    const tiers = tiersForRound(round);
+
+    const roundPicked = new Set(), shown=[];
+    for(const t of tiers){
+      const last=metrics._lastScore||0;
+      const minS=(t==='negative' && last<=-3)? -2 : null;  // avoid very dark back-to-back
+      let pick=pickUniqueFromTier(t, roundPicked, minS);
+      if(!pick){ // graceful fallbacks if a tier empties
+        if(t==='negative'){ pick = pickUniqueFromTier('neutral',roundPicked) || pickUniqueFromTier('positive',roundPicked); }
+        else if(t==='neutral'){ pick = pickUniqueFromTier('positive',roundPicked) || pickUniqueFromTier('negative',roundPicked); }
+        else { pick = pickUniqueFromTier('positive',roundPicked); }
+      }
+      if(pick){ roundPicked.add(pick.word); shown.push(pick); }
+    }
+    if(!shown.length) return endSequence();
+
+    shown.forEach(({word,score})=>{
+      seenWords.add(word);
+      const btn=document.createElement('button');
+      btn.className=`btn ${stageClass}`;
+      btn.textContent=word;
+      btn.onclick=()=>handleChoice({word,score});
+      controls.appendChild(btn);
+      requestAnimationFrame(()=>btn.classList.add('show'));
+    });
+  }
+
+  async function handleChoice(choice){
+    if(busy) return;
+    // fade out the 3 choice buttons quickly, then reflect
+    await fadeOutControls(200);
+
+    const tier=(choice.score<=-2)?'negative':(choice.score<=1)?'neutral':'positive';
+    metrics._lastScore = choice.score;
+
+    if(metrics.baseline === null) metrics.baseline = choice.score;
+    metrics.cumulativeScore += choice.score;
+    if(tier==='positive') metrics.pos++; else if(tier==='neutral') metrics.neu++; else metrics.neg++;
+
+    const reward=(tier==='positive')?1:(tier==='neutral')?0.5:0;
+    updateBandit(tier,reward);
+
+    const ref = weightedPop(_b.reflection[tier], LEX.reflection[tier]);
+    await typeConsole(ref);
+
+    // Clear console BEFORE action button so reflection stands alone
+    await clearConsolePause(180);
+
+    controls.innerHTML='';
+    const act=document.createElement('button');
+    act.className='btn action-btn';
+    act.textContent=(tier==='negative')?'Drop Weight':(tier==='positive')?'Cast Hope':'Continue';
+    act.onclick=async()=>{
+      if(busy) return;
+      // fade the action button out immediately so console can breathe
+      await fadeOutControls(160);
+
+      if(tier==='negative'){ onDrop();  await typeConsole(takeRandomFrom(_b.reinforcement.drop,    LEX.reinforcement.drop)); }
+      if(tier==='neutral') {             await typeConsole(takeRandomFrom(_b.reinforcement.continue,LEX.reinforcement.continue)); }
+      if(tier==='positive'){ onCast();  await typeConsole(takeRandomFrom(_b.reinforcement.hope,    LEX.reinforcement.hope)); }
+
+      // no repeated instruction—just move forward
+      await clearConsolePause(140);
+      nextRound();
+    };
+    controls.appendChild(act);
+    requestAnimationFrame(()=>act.classList.add('show'));
+  }
+
+  function nextRound(){
+    if(busy) return;
+    round++;
+    liftBackgroundByProgress();
+    if(round >= maxRounds) endSequence();
+    else setTimeout(()=>{ if(!busy) showChoices(); }, 600);
+  }
+
+  function liftBackgroundByProgress(){
+    const lift = Math.min(round, maxRounds) / maxRounds;
+    document.body.style.background =
+      `radial-gradient(circle at 50% 75%,
+        rgba(180,210,255,${0.10 + 0.20*lift}) 0%,
+        #001933 45%, #000814 100%)`;
+  }
+
+  async function endSequence(){
+    controls.innerHTML='';
+
+    const n = metrics.pos + metrics.neu + metrics.neg;        // should equal maxRounds
+    const avg = n ? (metrics.cumulativeScore / n) : 0;
+    const start = metrics.baseline ?? 0;
+    const delta = avg - start;
+
+    const startLabel = labelForScore(start);
+    const endLabel   = labelForScore(avg);
+
+    const countsLine = `Across ${n} ${n===1?'step':'steps'}: ${metrics.pos} uplifting, ${metrics.neu} balancing, ${metrics.neg} releasing.`;
+    const shiftLine  = `Net shift: ${(delta>=0?'+':'')}${delta.toFixed(2)} from your first step.`;
+
+    let arc;
+    if (start <= -2 && avg >= 2)      arc = 'From shadow to sunrise—karma restored; yin and yang re-joined in motion.';
+    else if (avg >= 2)                arc = 'Your pattern reads bright and ascending—momentum toward harmony.';
+    else if (avg > -2 && avg <= 1)    arc = 'You’ve settled near the middle way—balance returning.';
+    else                              arc = 'The fog lingers, but your steps have meaning; return when you’re ready.';
+
+    const summary =
+`When you began, your selections felt ${startLabel}.
+By the end, they read ${endLabel}.
+${countsLine}
+${shiftLine}
+
+${arc}`;
+
+    // Expand console + move controls down so nothing overlaps
+    document.body.classList.add('end-mode');
+    consoleEl.classList.add('console-tall');
+
+    await typeConsole(summary, 70);
+
+    if(buddha){ buddha.classList.remove('glow'); void buddha.offsetWidth; buddha.classList.add('glow'); }
+    try{ sounds.chant.pause(); sounds.river.pause(); sounds.birds.pause(); }catch{}
+
+    const reset=document.createElement('button');
+    reset.className='btn reset-btn show';
+    reset.textContent='Begin New Journey';
+    reset.onclick=resetAll;
+    controls.appendChild(reset);
+  }
+
+  function resetAll(){
+    round=0; castCount=0; busy=false; seenWords.clear(); shownDirection=false;
+    document.body.classList.remove('end-mode');
+    consoleEl.classList.remove('console-tall');
+    consoleInner.textContent = 'Welcome, traveler. Press Begin Journey to start…';
+
+    metrics.baseline=null; metrics.cumulativeScore=0; metrics.pos=metrics.neu=metrics.neg=0; metrics._lastScore=0;
+    bandit.arms.negative={n:0,r:0}; bandit.arms.neutral={n:0,r:0}; bandit.arms.positive={n:0,r:0};
+    Object.values(sounds).forEach(a=>{ try{ a.currentTime=0; a.pause(); }catch{} });
+    playStartAmbience();
+    _b = freshBuckets();
+    playIntroThenWeigh();
+  }
+
+  /* ---- Non-repeating text helpers ---- */
+  function takeRandomFrom(bucket, fallback){
+    if(!bucket.length) bucket.push(...fallback);
+    const i = Math.floor(Math.random()*bucket.length);
+    return bucket.splice(i,1)[0];
+  }
+  function weightedPop(bucket, fallback){
+    if(!bucket.length) bucket.push(...fallback.map(o=>({text:o.text, weight:o.weight||1})));
+    let total = bucket.reduce((s,o)=>s+(o.weight||1),0), r=Math.random()*total, i=0;
+    while(i<bucket.length){ r -= (bucket[i].weight||1); if(r<=0) break; i++; }
+    const chosen = bucket.splice(Math.min(i,bucket.length-1),1)[0];
+    return chosen.text;
+  }
+  function freshBuckets(){
+    const fb = LEX.reflection, rf = LEX.reinforcement;
+    return {
+      reflection:{
+        negative:(fb?.negative||[]).map(o=>({text:o.text,weight:o.weight||1})),
+        neutral: (fb?.neutral ||[]).map(o=>({text:o.text,weight:o.weight||1})),
+        positive:(fb?.positive||[]).map(o=>({text:o.text,weight:o.weight||1}))
+      },
+      reinforcement:{
+        drop:    (rf?.drop    ||[]).slice(),
+        continue:(rf?.continue||[]).slice(),
+        hope:    (rf?.hope    ||[]).slice()
+      }
+    };
+  }
+  let _b = freshBuckets();
+
+  /* ---- Safe start binding ---- */
+  (function initStart(){
+    // seed guidance/reflection/reinforcement
+    LEX.reflection    = FB.reflection;
+    LEX.reinforcement = FB.reinforcement;
+    LEX.guidance      = FB.guidance;
+
+    const btn = document.getElementById('startBtn');
+    if(!btn){ console.error('Start button not found'); return; }
+    btn.addEventListener('click', async ()=>{
+      await fadeOutElement(btn, 200);          // smooth fade of Start
+      consoleInner.textContent = 'The bridge awaits…';
+      playStartAmbience();
+      try { await playIntroThenWeigh(); }
+      catch(e){ console.warn('Intro failed; showing choices.', e); if(!shownDirection){ await typeConsole(FB.guidance.choose); shownDirection=true; } await clearConsolePause(120); showChoices(); }
+    }, { once:true });
+  })();
+  </script>
+</body>
+</html>
